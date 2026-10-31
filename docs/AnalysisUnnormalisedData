@@ -1,0 +1,48 @@
+# A1 – Analysis of Unnormalised Data
+## 1. Introduction
+Crownfield Eye Hospital currently manages patient and clinical information using a combination of paper records, Microsoft Word documents and Excel spreadsheets. These records contain information relating to patients, ophthalmologists and other clinical staff, specialist eye clinics, appointments, diagnoses, prescribed medications, treatments and follow-up plans.
+Storing information across separate and unstructured files can make it difficult to maintain consistency, avoid duplication and retrieve information efficiently. It can also increase the risk of data integrity problems.
+The purpose of this analysis is to identify potential problems associated with the hospital's current data management approach and explain why a structured relational database is required.
+## 2. Potential Repeating Groups
+The scenario indicates that the hospital stores information in unstructured and unnormalised files. This creates a risk that multiple values may be recorded within a single field or that similar information may be repeated within the same record.
+For example, an appointment may involve multiple diagnoses, prescribed medications or treatments. If these are stored together in one field or as repeated columns in a spreadsheet, the data would not follow First Normal Form (1NF).
+To avoid this problem, each field should contain a single value, and repeating information should be stored in separate related records.
+## 3. Data Redundancy
+Data redundancy occurs when the same information is stored more than once.
+In Crownfield Eye Hospital, patient details, clinical staff information and clinic information may be recorded across different documents and spreadsheets. For example, staff and clinic details may need to be entered repeatedly whenever appointments are recorded.
+This can lead to unnecessary duplication and increase the amount of data that must be maintained.
+A relational database can reduce redundancy by storing each main type of information in its own table and connecting related records through primary and foreign keys.
+## 4. Potential Data Inconsistencies
+Managing information across paper records, Word documents and Excel spreadsheets can result in inconsistent data entry.
+For example:
+- Dates may be recorded using different formats.
+- Staff names or job titles may be entered differently across documents.
+- Clinic names may not follow a consistent naming convention.
+- Medication and treatment information may be recorded using different formats.
+- Missing information may be represented inconsistently.
+These are potential risks arising from the current system described in the scenario. They would need to be confirmed by examining the hospital's original records.
+Standardised data types, naming conventions and validation rules in a relational database would help reduce these problems.
+## 5. Data Anomalies
+An unnormalised database structure can create three main types of data anomalies.
+**Insertion anomaly**
+An insertion anomaly occurs when information cannot be added without also entering unrelated information. For example, the hospital may find it difficult to record details of a new clinician or clinic independently if these details are stored only alongside appointment records.
+**Update anomaly**
+An update anomaly occurs when the same information is stored in multiple locations. If staff or clinic details change, several documents or spreadsheets may need to be updated. If one copy is not updated, inconsistent information may remain in the system.
+**Deletion anomaly**
+A deletion anomaly occurs when removing one record unintentionally removes other useful information. For example, if clinician details are stored only within appointment records, deleting an appointment could also remove the only stored copy of information about that clinician.
+Separating information into related tables would help prevent these anomalies.
+## 6. Assumptions
+The following assumptions will guide the proposed database design:
+- Each patient will have a unique patient identifier.
+- Each clinician will have a unique clinician identifier.
+- Each clinic will have a unique clinic identifier.
+- A patient may have multiple appointments.
+- Each appointment will be associated with one patient, one clinician and one clinic.
+- An appointment may have one or more diagnoses, prescriptions or treatments where applicable.
+- A prescription may contain multiple medicines, with relevant instructions recorded for each medicine.
+- Follow-up plans will be associated with the relevant appointment.
+- Required information will be identified through appropriate validation rules and database constraints.
+These assumptions will be reviewed during the conceptual and logical database design stages.
+## 7. Conclusion
+The current information management approach at Crownfield Eye Hospital presents potential problems involving data redundancy, inconsistency, repeating information and data anomalies. These issues can affect the accuracy, accessibility and reliability of clinical information.
+A relational database designed using normalisation principles will help organise the hospital's information into structured tables, reduce unnecessary duplication and establish relationships between records. This will provide a more consistent and reliable foundation for the hospital's digital transformation.
