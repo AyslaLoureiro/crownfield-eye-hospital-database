@@ -310,3 +310,197 @@ SHOW TRIGGERS;
 
 ----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
+
+-- GABRIEL RODRIGUES QUERIES 
+
+-- FIRST QUERY // INNER JOIN 
+
+SELECT
+
+    p.patient_name,
+
+    c.clinician_name,
+
+    cl.clinic_name,
+
+    a.appointment_date,
+
+    a.appointment_time
+
+
+
+FROM patients p
+
+
+
+INNER JOIN appointments a
+
+    ON p.patient_id = a.patients_patientId
+
+
+
+INNER JOIN clinicians c
+
+    ON a.clinician_clinicianId = c.clinician_id
+
+
+
+INNER JOIN clinic cl
+
+    ON a.clinic_clinicId = cl.clinic_id
+
+
+
+ORDER BY a.appointment_date;
+
+-- SECOND QUERY // LEFT JOIN
+
+SELECT
+
+    a.appointment_id,
+
+    p.patient_name,
+
+    a.appointment_date,
+
+    t.treatment_id,
+
+    t.treatment_description
+
+
+
+FROM appointments a
+
+
+
+INNER JOIN patients p
+
+    ON a.patients_patientId = p.patient_id
+
+
+
+LEFT JOIN treatments t
+
+    ON a.appointment_id = t.appointment_appoimentId
+
+
+
+WHERE t.treatment_id IS NULL;
+
+-- THIRD QUERY // GROUP BY + HAVING
+
+
+SELECT
+    cl.clinic_id,
+    cl.clinic_name,
+    COUNT(a.appointment_id) AS total_appointments
+FROM clinic cl
+
+INNER JOIN appointments a
+    ON cl.clinic_id = a.clinic_clinicId
+
+GROUP BY
+    cl.clinic_id,
+    cl.clinic_name
+
+HAVING COUNT(a.appointment_id) > 1;
+
+-- FOURTH QUERY // SUBQUERY
+
+WITH patient_appointment_counts AS (
+
+    SELECT
+
+        p.patient_id,
+
+        p.patient_name,
+
+        COUNT(a.appointment_id) AS total_appointments
+
+
+
+    FROM patients p
+
+
+
+    LEFT JOIN appointments a
+
+        ON p.patient_id = a.patients_patientId
+
+
+
+    GROUP BY
+
+        p.patient_id,
+
+        p.patient_name
+
+)
+
+
+
+SELECT
+
+    patient_id,
+
+    patient_name,
+
+    total_appointments
+
+
+
+FROM patient_appointment_counts
+
+
+
+WHERE total_appointments > (
+
+    SELECT AVG(total_appointments)
+
+    FROM patient_appointment_counts
+
+);
+
+-- FIFTH QUERY // STORE PROCEDURE
+
+DELIMITER //
+
+CREATE PROCEDURE SearchAppointmentsByClinician(
+    IN p_clinician_id INT
+)
+BEGIN
+
+    SELECT
+        clinician_clinicianId,
+        patients_patientId,
+        appointment_date,
+        appointment_time
+
+    FROM appointments
+
+    WHERE clinician_clinicianId = p_clinician_id;
+
+END //
+
+DELIMITER ;
+
+CALL SearchAppointmentsByClinician(2);
+
+
+-- SIXTH QUERY // TRIGGER
+
+CREATE TRIGGER set_treatment_date
+BEFORE INSERT ON treatments
+FOR EACH ROW
+BEGIN
+    SET NEW.treatment_date = CURDATE();
+END //
+
+DELIMITER ;
+
+INSERT INTO treatments
+(treatment_id, appointment_appoimentId, treatment_description)
+VALUES
+(10, 2, 'Blood test');
+
+SELECT * FROM treatments;
