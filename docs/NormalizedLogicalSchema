@@ -1,0 +1,98 @@
+# A3 – Normalize and Create the Logical Schema
+
+## 1. Introduction
+
+The purpose of this task is to normalise the Crownfield Eye Hospital database and create its logical schema.
+
+The database was organised using three normalisation stages: 1NF, 2NF and 3NF. This helps reduce duplicated data and improve data organisation.
+
+## 2. Normalisation Process
+
+### UNF – Unnormalised Form
+
+Initially, hospital information could be stored in one large table, including patients, clinicians, appointments and prescriptions.
+
+This could cause duplicated information and make updates difficult.
+
+### 1NF – First Normal Form
+
+To achieve 1NF, each column must contain a single value, and each record must have a unique identifier.
+
+The information was separated into individual tables, such as Patients, Clinicians, Appointments and Medicines.
+
+### 2NF – Second Normal Form
+
+To achieve 2NF, the database must be in 1NF, and non-key attributes must depend on the whole primary key.
+
+The Prescription_Item table connects prescriptions and medicines and stores information such as dosage, route, frequency and duration.
+
+### 3NF – Third Normal Form
+
+To achieve 3NF, the database must be in 2NF and avoid transitive dependencies.
+
+For example, clinician information and specialty information are stored in separate tables. The Clinicians table uses a foreign key to connect to the Specialty table.
+
+This helps avoid duplicated information.
+
+## 3. Data Dependencies
+
+### Functional Dependency
+
+A functional dependency means that one attribute determines another.
+
+Examples:
+
+- patient_id -> patient_name, patient_date_of_birth
+- clinician_id -> clinician_name, clinician_role
+- specialty_id -> specialty_name
+- appointment_id -> appointment_date, appointment_time
+
+### Partial Dependency
+
+A partial dependency occurs when an attribute depends on only part of a composite key.
+
+The Prescription_Item table connects prescriptions and medicines. Its medication instructions describe each prescribed item.
+
+### Transitive Dependency
+
+A transitive dependency occurs when a non-key attribute depends on another non-key attribute.
+
+For example, a clinician is associated with a specialty through specialty_specialtyId. The specialty name is stored separately in the Specialty table.
+
+## 4. Final Logical Relational Schema
+
+The final database contains eleven tables:
+
+| Table | Primary Key | Foreign Keys |
+|---|---|---|
+| Patients | patient_id | - |
+| Specialty | specialty_id | - |
+| Clinicians | clinician_id | specialty_specialtyId |
+| Clinic | clinic_id | - |
+| Appointments | appointment_id | patients_patientId, clinician_clinicianId, clinic_clinicId |
+| Diagnosis | diagnosis_id | appointment_appoimentId |
+| Prescriptions | prescription_id | appointment_appoimentId |
+| Medicines | medicine_id | - |
+| Prescription_Item | prescription_itemId | prescription_prescriptionId, medicine_medicineId |
+| Treatments | treatment_id | appointment_appoimentId |
+| FollowUp | follow_up_id | appointment_appoimentId |
+
+## 5. Integrity Constraints
+
+The database uses different constraints to maintain data accuracy:
+
+- **Primary Key (PK):** Uniquely identifies each record.
+- **Foreign Key (FK):** Connects related tables.
+- **NOT NULL:** Prevents mandatory fields from being empty.
+- **UNIQUE:** Prevents duplicate values where required.
+- **CHECK:** Validates data according to specific conditions.
+
+These constraints help maintain data integrity and consistency.
+
+## 6. Conclusion
+
+The normalisation process helped organise the hospital database into eleven related tables.
+
+The use of 1NF, 2NF and 3NF helps reduce data duplication and improve consistency.
+
+The final logical schema uses primary keys, foreign keys and integrity constraints to create a structured database for Crownfield Eye Hospital.

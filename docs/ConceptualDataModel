@@ -1,0 +1,120 @@
+# A2 – Create a Conceptual Data Model
+
+## 1. Introduction
+
+The purpose of this task is to create a conceptual data model for Crownfield Eye Hospital NHS Foundation Trust.
+
+The model identifies eleven entities, their attributes and relationships required to manage patient and clinical information. An Entity Relationship Diagram (ERD) was designed using Crow's Foot notation to represent cardinality and optionality.
+
+This model provides the foundation for the hospital's relational database.
+
+## 2. Identification of Entities and Attributes
+
+The conceptual model consists of eleven entities:
+
+**Patients**
+- patient_id (PK)
+- patient_name
+- patient_date_of_birth
+
+**Specialty**
+- specialty_id (PK)
+- specialty_name
+
+**Clinicians**
+- clinician_id (PK)
+- clinician_name
+- specialty_specialtyId (FK)
+- clinician_role
+
+**Clinic**
+- clinic_id (PK)
+- clinic_name
+- clinic_location
+
+**Appointments**
+- appointment_id (PK)
+- patients_patientId (FK)
+- clinician_clinicianId (FK)
+- clinic_clinicId (FK)
+- appointment_date
+- appointment_time
+
+**Diagnosis**
+- diagnosis_id (PK)
+- appointment_appoimentId (FK)
+- diagnosis_description
+- diagnosis_date
+
+**Prescriptions**
+- prescription_id (PK)
+- appointment_appoimentId (FK)
+- prescription_date
+
+**Medicines**
+- medicine_id (PK)
+- medicine_name
+
+**Prescription_Item**
+- prescription_itemId (PK)
+- prescription_prescriptionId (FK)
+- medicine_medicineId (FK)
+- dosage
+- route
+- frequency
+- duration
+
+**Treatments**
+- treatment_id (PK)
+- appointment_appoimentId (FK)
+- treatment_description
+- treatment_date
+
+**FollowUp**
+- follow_up_id (PK)
+- appointment_appoimentId (FK)
+- due_date
+- priority
+- status
+- notes
+
+## 3. Relationships, Cardinality and Optionality
+
+The model includes the following relationships:
+
+- Patients to Appointments (1:M)
+- Clinicians to Appointments (1:M)
+- Specialty to Clinicians (1:M)
+- Clinic to Appointments (1:M)
+- Appointments to Diagnosis (1:M)
+- Appointments to Prescriptions (1:M)
+- Appointments to Treatments (1:M)
+- Appointments to FollowUp (1:M)
+- Prescriptions to Prescription_Item (1:M)
+- Medicines to Prescription_Item (1:M)
+
+Each appointment must be associated with one patient, one clinician and one clinic.
+
+Diagnoses, prescriptions, treatments and follow-ups are optional because not every appointment necessarily requires these records.
+
+The Prescription_Item entity acts as an associative entity, resolving the many-to-many relationship between prescriptions and medicines.
+
+## 4. Justification of Modelling Decisions
+
+The entities were separated according to their functions within the hospital to reduce data duplication and improve data organisation.
+
+Primary keys (PK) uniquely identify records, while foreign keys (FK) establish relationships and support referential integrity.
+
+The Prescription_Item entity connects prescriptions and medicines while storing individual medication instructions, including dosage, route, frequency and duration.
+
+Diagnoses, prescriptions, treatments and follow-ups were modelled as separate entities because they represent different clinical activities associated with appointments.
+
+These modelling decisions provide flexibility and support the hospital's operational requirements.
+
+## 5. Conclusion
+
+The conceptual data model identifies eleven entities and defines the relationships required to support Crownfield Eye Hospital's information management system.
+
+Crow's Foot notation, primary keys, foreign keys and the associative entity Prescription_Item provide a structured foundation for the relational database implementation in MySQL.
+
+The model supports organised data storage, reduces unnecessary duplication and helps maintain data integrity.
